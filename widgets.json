@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Rose Widget",
+    "width": 2.0,
+    "height": 5.5,
+    "length": 1.0,
+    "weight": 180.0
+  },
+  {
+    "name": "Doug Widget",
+    "width": 2.0,
+    "height": 6.0,
+    "length": 1.5,
+    "weight": 215.0
+  },
+  {
+    "name": "Liz Widget",
+    "width": 2.1,
+    "height": 5.5,
+    "length": 3.8,
+    "weight": 180.0
+  },
+  {
+    "name": "Spring Widget",
+    "width": 1.0,
+    "height": 1.0,
+    "length": 1.0,
+    "weight": 123.0
+  }
+]
