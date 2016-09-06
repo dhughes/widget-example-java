@@ -1,5 +1,6 @@
 package service;
 
+import entity.Note;
 import entity.Widget;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class MenuService {
     public static final int VIEW_WIDGET = 3;
     public static final int EDIT_WIDGET = 4;
     public static final int DELETE_WIDGET = 5;
-    public static final int QUIT = 6;
+    public static final int ADD_NOTE = 6;
+    public static final int QUIT = 7;
 
     public static final int GEAR_WIDGET = 1;
     public static final int SPRING_WIDGET = 2;
@@ -125,9 +127,22 @@ public class MenuService {
                 "3) View a Widget\n" +
                 "4) Edit a Widget\n" +
                 "5) Delete a Widget\n" +
-                "6) Quit\n");
+                "6) Add a note to a Widget\n" +
+                "7) Quit\n");
 
         return waitForInt("Please choose an option:", 1, 6);
+    }
+
+    public void promptForWidgetNoteData(Widget widget) {
+        displayWidget(widget);
+
+        System.out.printf("\n-- Create a note on 'Widget %s' --\n\n", widget.getName());
+
+        String text = waitForString("Note: ", true);
+
+        Note note = new Note(text);
+
+        widget.getNotes().add(note);
     }
 
     public Widget promptForWidgetData() {
@@ -153,15 +168,21 @@ public class MenuService {
                 widget.getWidth());
         double height = waitForDouble(
                 String.format("Height [%s]: ", widget.getHeight()),
-                widget.getWidth());
+                widget.getHeight());
         double length = waitForDouble(
-                String.format("Length [%s]: ", widget.getWidth()),
-                widget.getWidth());
+                String.format("Length [%s]: ", widget.getLength()),
+                widget.getLength());
         double weight = waitForDouble(
                 String.format("Weight [%s]: ", widget.getWeight()),
                 widget.getWeight());
 
-        return new Widget(name, width, height, length, weight);
+        widget.setName(name);
+        widget.setWidth(width);
+        widget.setLength(length);
+        widget.setHeight(height);
+        widget.setWeight(weight);
+
+        return widget;
     }
 
     public int promptForWidgetID() {
@@ -174,9 +195,8 @@ public class MenuService {
         if(widgets.size() == 0){
             System.out.println("\nNo Widgets were found.\n");
         } else {
-            for (int x = 0; x < widgets.size(); x++) {
-                Widget widget = widgets.get(x);
-                System.out.printf("%s) %s\n", x, widget.getName());
+            for (Widget widget : widgets) {
+                System.out.printf("%s) %s\n", widget.getId(), widget.getName());
             }
         }
     }
@@ -194,6 +214,17 @@ public class MenuService {
                 widget.getHeight(),
                 widget.getLength(),
                 widget.getWeight());
+
+        System.out.println("\nNotes: \n");
+
+        if(widget.getNotes().size() > 0) {
+            for (Note note : widget.getNotes()) {
+                System.out.printf("\t- %s\n", note.getText());
+            }
+
+        } else {
+            System.out.println("\tNo notes found.");
+        }
     }
 
     public void displayNoSuchWidget() {

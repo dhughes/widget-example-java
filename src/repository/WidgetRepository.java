@@ -10,6 +10,10 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,54 +23,64 @@ import java.util.List;
  */
 public class WidgetRepository {
 
-    private final Path filePath;
-    private final Gson gson;
+    private final Connection connection;
 
-    private ArrayList<Widget> widgets = new ArrayList<>();
+    public WidgetRepository(Connection connection) throws IOException {
+        this.connection = connection;
+    }
 
-    public WidgetRepository(String file) throws IOException {
-        gson = new GsonBuilder().setPrettyPrinting().create();
+    public void createWidget(Widget widget) throws IOException, SQLException {
+        PreparedStatement statement = this.connection
+                .prepareStatement("INSERT INTO widget (name, width, height, length, weight) VALUES (?, ?, ?, ?, ?) RETURNING id");
 
-        filePath = Paths.get(file);
+        // set values
+        statement.setString(1, widget.getName());
+        statement.setDouble(2, widget.getWidth());
+        statement.setDouble(3, widget.getHeight());
+        statement.setDouble(4, widget.getLength());
+        statement.setDouble(5, widget.getWeight());
 
-        if(Files.exists(filePath)) {
-            String json = new String(Files.readAllBytes(filePath));
-            Type listType = new TypeToken<ArrayList<Widget>>(){}.getType();
+        // run my query
+        ResultSet result = statement.executeQuery();
 
-            widgets = gson.fromJson(json, listType);
+        // set the ID of the widget I just persisted
+        while(result.next()){
+            widget.setId(result.getInt("id"));
         }
     }
 
-    public void createWidget(Widget widget) throws IOException {
-        widgets.add(widget);
-
-        persist();
+    public ResultSet listWidgets() throws SQLException {
+        return connection.createStatement().executeQuery("SELECT * FROM widget ORDER BY id");
     }
 
+    public ResultSet getWidget(int index) throws SQLException {
+        PreparedStatement statement = connection
+                .prepareStatement("SELECT * FROM widget WHERE id = ?");
+        statement.setInt(1, index);
 
-    public List<Widget> listWidgets() {
-        return widgets;
+        return statement.executeQuery();
     }
 
-    private void persist() throws IOException {
-        String json = gson.toJson(widgets);
-        Files.write(filePath, json.getBytes());
+    public void updateWidget(Widget widget) throws IOException, SQLException {
+        PreparedStatement statement = connection
+                .prepareStatement("UPDATE widget SET name = ?, width = ?, height = ?, length = ?, weight = ? WHERE id = ?");
+
+        statement.setString(1, widget.getName());
+        statement.setDouble(2, widget.getWidth());
+        statement.setDouble(3, widget.getHeight());
+        statement.setDouble(4, widget.getLength());
+        statement.setDouble(5, widget.getWeight());
+        statement.setInt(6, widget.getId());
+
+        statement.execute();
     }
 
+    public void deleteWidget(Widget widget) throws IOException, SQLException {
+        PreparedStatement statement = connection
+                .prepareStatement("DELETE FROM widget WHERE id = ?");
 
-    public Widget getWidget(int index) {
-        return widgets.get(index);
-    }
+        statement.setInt(1, widget.getId());
 
-    public void updateWidget(int index, Widget widget) throws IOException {
-        widgets.set(index, widget);
-
-        persist();
-    }
-
-    public void deleteWidget(int index) throws IOException {
-        widgets.remove(index);
-
-        persist();
+        statement.execute();
     }
 }

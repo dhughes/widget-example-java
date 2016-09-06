@@ -1,14 +1,19 @@
 package entity;
 
+import java.util.ArrayList;
+
 /**
  * Represents the general concept of a Widget
  */
 public class Widget {
+
+    private int id;
     private String name;
     private double width;
     private double height;
     private double length;
     private double weight;
+    private ArrayList<Note> notes = new ArrayList<>();
 
     // no arg constructor
     public Widget() {
@@ -20,6 +25,23 @@ public class Widget {
         this.height = height;
         this.length = length;
         this.weight = weight;
+    }
+
+    public Widget(int id, String name, double width, double height, double length, double weight) {
+        this.id = id;
+        this.name = name;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -60,6 +82,14 @@ public class Widget {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public ArrayList<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(ArrayList<Note> notes) {
+        this.notes = notes;
     }
 }
 

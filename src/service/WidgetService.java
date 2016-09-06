@@ -1,9 +1,14 @@
 package service;
 
+import entity.Note;
 import entity.Widget;
+import repository.NoteRepository;
 import repository.WidgetRepository;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,41 +17,79 @@ import java.util.List;
 public class WidgetService {
 
     private WidgetRepository widgetRepository;
+    private NoteRepository noteRepository;
 
-    public WidgetService(WidgetRepository widgetRepository) {
+    public WidgetService(WidgetRepository widgetRepository, NoteRepository noteRepository) {
         this.widgetRepository = widgetRepository;
+        this.noteRepository = noteRepository;
     }
 
-    public List<Widget> listWidgets() {
-        return widgetRepository.listWidgets();
-    }
+    public List<Widget> listWidgets() throws SQLException {
+        ResultSet results = widgetRepository.listWidgets();
 
-    public Widget getWidget(int index) {
-        try {
-            return widgetRepository.getWidget(index);
-        } catch (IndexOutOfBoundsException e){
-            return null;
+        ArrayList<Widget> widgets = new ArrayList<>();
+
+        while (results.next()){
+            Widget widget = new Widget(
+                    results.getInt("id"),
+                    results.getString("name"),
+                    results.getDouble("width"),
+                    results.getDouble("height"),
+                    results.getDouble("length"),
+                    results.getDouble("weight")
+            );
+            widgets.add(widget);
         }
+
+        return widgets;
     }
 
-    /**
-     *
-     * @param widget
-     * @throws IOException
-     */
-    public void createWidget(Widget widget) throws IOException {
+    public Widget getWidget(int id) throws SQLException {
+        ResultSet results = widgetRepository.getWidget(id);
+
+        Widget widget = null;
+
+        if(results.next()){
+            widget = new Widget(
+                    results.getInt("id"),
+                    results.getString("name"),
+                    results.getDouble("width"),
+                    results.getDouble("height"),
+                    results.getDouble("length"),
+                    results.getDouble("weight")
+            );
+        }
+
+        // get the notes
+        ResultSet noteResults = noteRepository.listNotes(widget.getId());
+
+        while(noteResults.next()){
+            Note note = new Note(
+                    noteResults.getInt("id"),
+                    noteResults.getString("text")
+            );
+            widget.getNotes().add(note);
+        }
+
+        return widget;
+    }
+
+    public void createWidget(Widget widget) throws IOException, SQLException {
         widgetRepository.createWidget(widget);
     }
 
-    public void updateWidget(int index, Widget widget) throws IOException {
-        widgetRepository.updateWidget(index, widget);
+    public void updateWidget(Widget widget) throws IOException, SQLException {
+        widgetRepository.updateWidget(widget);
+
+        for(Note note : widget.getNotes()){
+            if(note.getId() == 0){
+                noteRepository.createNote(note, widget.getId());
+            }
+        }
+
     }
 
-    public void deleteWidget(int index) throws IOException {
-        try {
-            widgetRepository.deleteWidget(index);
-        } catch (IndexOutOfBoundsException e){
-            // do nothing
-        }
+    public void deleteWidget(Widget widget) throws IOException, SQLException {
+        widgetRepository.deleteWidget(widget);
     }
 }

@@ -26,5 +26,12 @@
     "height": 1.0,
     "length": 1.0,
     "weight": 123.0
+  },
+  {
+    "name": "Lexi Widget",
+    "width": 12.0,
+    "height": 24.0,
+    "length": 48.0,
+    "weight": 1.0
   }
 ]

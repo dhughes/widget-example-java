@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - widgets@localhost" uuid="2d9f350a-ddee-45b9-91db-dc28378d770f">
+      <secret-storage>master_key</secret-storage>
+      <introspection-scope>widgets:public,pg_catalog,</introspection-scope>
+      <resolve-scope>widgets:public,</resolve-scope>
+    </data-source>
+    <data-source name="PostgreSQL - widgetstest@localhost" uuid="5e614c87-5ef4-4dad-9930-77c386fd97a8">
+      <secret-storage>master_key</secret-storage>
+      <introspection-scope>widgetstest:public,pg_catalog,</introspection-scope>
+      <resolve-scope>widgetstest:public,</resolve-scope>
+    </data-source>
+  </component>
+</project>
