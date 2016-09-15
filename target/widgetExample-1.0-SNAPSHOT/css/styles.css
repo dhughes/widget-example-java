@@ -21,7 +21,7 @@ li a{
 .widget{
     border: 1px solid black;
     clear: both;
-    margin: 1em;
+    margin: 1em 0 1em 0;
     padding: 1em;
 }
 
@@ -49,4 +49,36 @@ label{
 
 form > div{
     margin: 0.5em 0;
+}
+
+table{
+    border-collapse: collapse;
+    margin: 1em 0 1em 0 ;
+}
+
+
+table tr td:first-child{
+    white-space: nowrap;
+}
+
+table tr th:nth-child(2){
+    width: 100%;
+}
+
+th, td{
+    margin: 0;
+    border: 1px solid black;
+    padding: 0.25em;
+    text-align: left;
+
+}
+
+.noteLabel{
+    display: block;
+    width: 100%
+}
+
+textarea {
+    width: 40em;
+    height: 5em;
 }

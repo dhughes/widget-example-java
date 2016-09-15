@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,7 +69,8 @@ public class WidgetService {
             while(noteResults.next()){
                 Note note = new Note(
                         noteResults.getInt("id"),
-                        noteResults.getString("text")
+                        noteResults.getString("text"),
+                        noteResults.getDate("date")
                 );
                 widget.getNotes().add(note);
             }
@@ -127,6 +129,19 @@ public class WidgetService {
                     results.getDouble("length"),
                     results.getDouble("weight")
             );
+
+            // get the notes
+            ResultSet noteResults = noteRepository.listNotes(widget.getId());
+
+            while(noteResults.next()){
+                Note note = new Note(
+                        noteResults.getInt("id"),
+                        noteResults.getString("text"),
+                        noteResults.getDate("date")
+                );
+                widget.getNotes().add(note);
+            }
+
             widgets.add(widget);
         }
 
@@ -144,5 +159,9 @@ public class WidgetService {
         }
 
         return null;
+    }
+
+    public void deleteNoteById(Integer noteId) throws SQLException {
+        noteRepository.deleteNoteById(noteId);
     }
 }

@@ -44,4 +44,14 @@ public class NoteRepository {
 
     }
 
+    public void deleteNoteById(Integer noteId) throws SQLException {
+        PreparedStatement statement = this.connection
+                .prepareStatement("DELETE FROM note WHERE id = ?");
+
+        statement.setInt(1, noteId);
+
+        statement.execute();
+    }
+
+
 }

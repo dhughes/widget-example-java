@@ -57,7 +57,8 @@
                 <strong>Width:</strong> <%= widget.getWidth()%><br/>
                 <strong>Height:</strong> <%= widget.getHeight()%><br/>
                 <strong>Length:</strong> <%= widget.getLength()%><br/>
-                <strong>Weight:</strong> <%= widget.getWeight()%>
+                <strong>Weight:</strong> <%= widget.getWeight()%><br/>
+                <strong>Notes:</strong> <a href="/widgetNotes?id=<%= widget.getId() %>"><%= widget.getNotes().size()%> notes...</a>
             </div>
         </div>
 
