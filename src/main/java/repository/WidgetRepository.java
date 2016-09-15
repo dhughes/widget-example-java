@@ -1,23 +1,12 @@
 package repository;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import entity.Widget;
-import entity.WidgetType;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Manages persistence of widgets
@@ -66,7 +55,10 @@ public class WidgetRepository {
     }
 
     public ResultSet listWidgets() throws SQLException {
-        return connection.createStatement().executeQuery("SELECT * FROM widget ORDER BY id");
+        return connection.createStatement().executeQuery("" +
+                "SELECT w.*, t.type " +
+                "FROM widget as w LEFT JOIN widgettype as t " +
+                "   ON w.widgettypeid = t.id");
     }
 
     public ResultSet getWidget(int index) throws SQLException {
@@ -106,5 +98,45 @@ public class WidgetRepository {
 
     public ResultSet listWidgetTypes() throws SQLException {
         return connection.createStatement().executeQuery("SELECT * FROM widgettype ORDER BY id");
+    }
+
+    public ResultSet listWidgets(String name, Integer typeId, Integer id) throws SQLException {
+        String sql = "SELECT w.*, t.type " +
+                "FROM widget as w LEFT JOIN widgettype as t " +
+                "   ON w.widgettypeid = t.id " +
+                "WHERE 1 = 1 ";
+
+        if(name != null){
+            sql += " AND w.name like ? ";
+        }
+        if(typeId != null){
+            sql += " AND t.id = ? ";
+        }
+        if(id != null){
+            sql += " AND w.id = ? ";
+        }
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        int indexOfQuestionMark = 0;
+        if(name != null){
+            statement.setString(++indexOfQuestionMark, "%" + name + "%");
+        }
+        if(typeId != null){
+            statement.setInt(++indexOfQuestionMark, typeId);
+        }
+        if(id != null){
+            statement.setInt(++indexOfQuestionMark, id);
+        }
+
+        return statement.executeQuery();
+    }
+
+    public ResultSet getWidgetType(int typeId) throws SQLException {
+        PreparedStatement statement = connection
+                .prepareStatement("SELECT * FROM widgetType WHERE id = ?");
+        statement.setInt(1, typeId);
+
+        return statement.executeQuery();
     }
 }

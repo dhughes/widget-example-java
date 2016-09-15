@@ -34,6 +34,7 @@ public class WidgetService {
             Widget widget = new Widget(
                     results.getInt("id"),
                     results.getString("name"),
+                    results.getString("type"),
                     results.getDouble("width"),
                     results.getDouble("height"),
                     results.getDouble("length"),
@@ -60,17 +61,17 @@ public class WidgetService {
                     results.getDouble("length"),
                     results.getDouble("weight")
             );
-        }
 
-        // get the notes
-        ResultSet noteResults = noteRepository.listNotes(widget.getId());
+            // get the notes
+            ResultSet noteResults = noteRepository.listNotes(widget.getId());
 
-        while(noteResults.next()){
-            Note note = new Note(
-                    noteResults.getInt("id"),
-                    noteResults.getString("text")
-            );
-            widget.getNotes().add(note);
+            while(noteResults.next()){
+                Note note = new Note(
+                        noteResults.getInt("id"),
+                        noteResults.getString("text")
+                );
+                widget.getNotes().add(note);
+            }
         }
 
         return widget;
@@ -109,5 +110,39 @@ public class WidgetService {
         }
 
         return widgetTypes;
+    }
+
+    public List<Widget> listWidgets(String name, Integer typeId, Integer id) throws SQLException {
+        ResultSet results = widgetRepository.listWidgets(name, typeId, id);
+
+        ArrayList<Widget> widgets = new ArrayList<>();
+
+        while (results.next()){
+            Widget widget = new Widget(
+                    results.getInt("id"),
+                    results.getString("name"),
+                    results.getString("type"),
+                    results.getDouble("width"),
+                    results.getDouble("height"),
+                    results.getDouble("length"),
+                    results.getDouble("weight")
+            );
+            widgets.add(widget);
+        }
+
+        return widgets;
+    }
+
+    public WidgetType getWidgetTypeById(int typeId) throws SQLException {
+        ResultSet results = widgetRepository.getWidgetType(typeId);
+
+        if(results.next()){
+            return new WidgetType(
+                    results.getInt("id"),
+                    results.getString("type")
+            );
+        }
+
+        return null;
     }
 }

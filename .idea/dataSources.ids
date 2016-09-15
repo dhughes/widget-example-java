@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="PostgreSQL - widgets@localhost" uuid="2d9f350a-ddee-45b9-91db-dc28378d770f">
+  <data-source name="PostgreSQL - widgets@localhost" uuid="ef000ca1-eafc-4dad-9d28-06defdc3a1fe">
     <database-info product="PostgreSQL" version="9.5.2" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.4 JDBC4 (build 1201)">
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
@@ -95,7 +95,7 @@
         <object-id>2200</object-id>
         <visible>1</visible>
         <introspection-state-number>6624</introspection-state-number>
-        <introspection-timestamp>2016-09-15.09:20:37.205</introspection-timestamp>
+        <introspection-timestamp>2016-09-15.10:24:42.234</introspection-timestamp>
       </schema>
       <schema id="30" parent="1" name="pg_catalog">
         <object-id>11</object-id>
@@ -279,8 +279,5 @@
         <primary>1</primary>
       </key>
     </database-model>
-  </data-source>
-  <data-source name="PostgreSQL - widgetstest@localhost" uuid="5e614c87-5ef4-4dad-9930-77c386fd97a8">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
 </component>

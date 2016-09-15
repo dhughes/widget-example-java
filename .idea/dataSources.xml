@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3354210244">
-    <data-source source="LOCAL" name="PostgreSQL - widgets@localhost" uuid="2d9f350a-ddee-45b9-91db-dc28378d770f">
+  <component name="DataSourceManagerImpl" format="xml" hash="1073170894">
+    <data-source source="LOCAL" name="PostgreSQL - widgets@localhost" uuid="ef000ca1-eafc-4dad-9d28-06defdc3a1fe">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/widgets</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="PostgreSQL - widgetstest@localhost" uuid="5e614c87-5ef4-4dad-9930-77c386fd97a8">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/widgetstest</jdbc-url>
     </data-source>
   </component>
 </project>
