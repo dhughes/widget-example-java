@@ -2,8 +2,7 @@ package servlet;
 
 import entity.Widget;
 import entity.WidgetType;
-import repository.NoteRepository;
-import repository.WidgetRepository;
+import factory.ServiceFactory;
 import service.WidgetService;
 
 import javax.servlet.ServletException;
@@ -12,8 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,45 +18,38 @@ import java.util.List;
  * Created by doug on 9/15/16.
  */
 @WebServlet("/widgetForm")
-public class WidgetFormServlet extends HttpServlet {
+public class WidgetFormServlet extends AbstractServlet {
 
     private WidgetService widgetService;
 
     @Override
     public void init() throws ServletException {
         try {
-            Class.forName("org.postgresql.Driver");
-
-            String jdbcUrl = "jdbc:postgresql://localhost/widgets";
-            Connection connection = DriverManager.getConnection(jdbcUrl);
-
-            WidgetRepository widgetRepository = new WidgetRepository(connection);
-            NoteRepository noteRepository = new NoteRepository(connection);
-
-            this.widgetService = new WidgetService(widgetRepository, noteRepository);
-
+            // get our widget service
+            this.widgetService = ServiceFactory.getWidgetService();
         } catch (ClassNotFoundException | SQLException | IOException e) {
-            throw new ServletException("Something went wrong starting up!", e);
+            throw new ServletException("Something went wrong initializing servlet" + this.getClass().getCanonicalName() , e);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
-
         // get widget
         try {
-            // get widget id
-            String id = req.getParameter("id");
+            // get widget id from the url
+            String id = getParameterAsString(req, "id");
 
+            // create a blank widget
             Widget widget = new Widget();
 
+            // if we've specified an id, then get that specific widget
             if (id != null) {
                 // get a specific widget
                 widget = widgetService.getWidget(Integer.parseInt(id));
             }
 
+            // put the widget into the attributes
             req.setAttribute("widget", widget);
 
             // widget types for dropdown
@@ -70,19 +60,21 @@ public class WidgetFormServlet extends HttpServlet {
             throw new ServletException("D'oh!", e);
         }
 
+        // forward to the form
         req.getRequestDispatcher("WEB-INF/widgetForm.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            // get the posted data
+
             // widget id
             Integer id = getParameterAsInt(req, "id");
             req.setAttribute("id", id);
 
             // name
-            String name = req.getParameter("name");
-            name = name == null || name.equals("") ? null : name;
+            String name = getParameterAsString(req, "name");
             req.setAttribute("name", name);
 
             // type
@@ -105,10 +97,13 @@ public class WidgetFormServlet extends HttpServlet {
             Double weight = getParameterAsDouble(req, "weight");
             req.setAttribute("weight", weight);
 
-            // get the widget type
+            // get the widget type based on the numeric id that was posted
             WidgetType type = widgetService.getWidgetTypeById(typeId);
 
+            // declare a widget
             Widget widget;
+
+            // if the id != 0 then we're editing an existing widget
             if (id != 0) {
                 // get the widget I'm editing
                 widget = widgetService.getWidget(id);
@@ -121,6 +116,7 @@ public class WidgetFormServlet extends HttpServlet {
                 widget.setLength(length);
                 widget.setWeight(weight);
             } else {
+                // create a new widget using the provided data. No need to set the id, it's already 0
                 widget = new Widget(name, type.getType(), width, length, height, weight);
             }
 
@@ -130,56 +126,27 @@ public class WidgetFormServlet extends HttpServlet {
             // if valid (do the work above!!)
             if(valid) {
 
-                if (id != 0) {
+                // if the id isn't zero we're updating the widget
+                if (widget.getId() != 0) {
                     widgetService.updateWidget(widget);
                 } else {
                     widgetService.createWidget(widget);
                 }
 
-                // redirect to the list
+                // redirect to the list of widgets
                 resp.sendRedirect("/listWidgets");
             } else {
-                // add the error messages to the attributes!!
+                // TODO: add error messages to the attributes!!
                 req.getRequestDispatcher("WEB-INF/widgetForm.jsp").forward(req, resp);
             }
 
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ServletException("Something went wrong", e);
         }
-
 
     }
 
-    private Integer getParameterAsInt(HttpServletRequest req, String name) {
 
-        String param = req.getParameter(name);
-        // make "" be null
-        param = param == null || param.equals("") ? null : param;
-
-        Integer paramAsInteger = null;
-        if (param != null) {
-            paramAsInteger = Integer.parseInt(param);
-        }
-
-        return paramAsInteger;
-    }
-
-
-
-    private Double getParameterAsDouble(HttpServletRequest req, String name) {
-
-        String param = req.getParameter(name);
-        // make "" be null
-        param = param == null || param.equals("") ? null : param;
-
-        Double paramAsInteger = null;
-        if (param != null) {
-            paramAsInteger = Double.parseDouble(param);
-        }
-
-        return paramAsInteger;
-    }
 }
 
 

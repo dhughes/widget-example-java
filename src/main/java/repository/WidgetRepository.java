@@ -107,7 +107,7 @@ public class WidgetRepository {
                 "WHERE 1 = 1 ";
 
         if(name != null){
-            sql += " AND w.name like ? ";
+            sql += " AND lower(w.name) like lower(?) ";
         }
         if(typeId != null){
             sql += " AND t.id = ? ";
