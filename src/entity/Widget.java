@@ -14,6 +14,7 @@ public class Widget {
     private double length;
     private double weight;
     private ArrayList<Note> notes = new ArrayList<>();
+    private String type;
 
     // no arg constructor
     public Widget() {
@@ -30,6 +31,25 @@ public class Widget {
     public Widget(int id, String name, double width, double height, double length, double weight) {
         this.id = id;
         this.name = name;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+    }
+
+    public Widget(int id, String name, String type, double width, double height, double length, double weight) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+    }
+
+    public Widget(String name, String type, double width, double height, double length, double weight) {
+        this.name = name;
+        this.type = type;
         this.width = width;
         this.height = height;
         this.length = length;
@@ -90,6 +110,14 @@ public class Widget {
 
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 

@@ -2,6 +2,7 @@ package service;
 
 import entity.Note;
 import entity.Widget;
+import entity.WidgetType;
 import repository.NoteRepository;
 import repository.WidgetRepository;
 
@@ -53,6 +54,7 @@ public class WidgetService {
             widget = new Widget(
                     results.getInt("id"),
                     results.getString("name"),
+                    results.getString("type"),
                     results.getDouble("width"),
                     results.getDouble("height"),
                     results.getDouble("length"),
@@ -91,5 +93,21 @@ public class WidgetService {
 
     public void deleteWidget(Widget widget) throws IOException, SQLException {
         widgetRepository.deleteWidget(widget);
+    }
+
+    public List<WidgetType> listWidgetTypes() throws SQLException {
+        ResultSet results = widgetRepository.listWidgetTypes();
+
+        ArrayList<WidgetType> widgetTypes = new ArrayList<>();
+
+        while (results.next()){
+            WidgetType widgetType = new WidgetType(
+                    results.getInt("id"),
+                    results.getString("type")
+            );
+            widgetTypes.add(widgetType);
+        }
+
+        return widgetTypes;
     }
 }

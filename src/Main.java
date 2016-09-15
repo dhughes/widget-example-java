@@ -1,4 +1,5 @@
 import entity.Widget;
+import entity.WidgetType;
 import repository.NoteRepository;
 import repository.WidgetRepository;
 import service.MenuService;
@@ -25,12 +26,16 @@ public class Main {
         WidgetService widgetService = new WidgetService(widgetRepository, noteRepository);
         MenuService menuService = new MenuService();
 
+        // get a list of valid Widget Types
+        List<WidgetType> types = widgetService.listWidgetTypes();
+
         while(true) {
             int primaryAction = menuService.promptForMainMenuSelection();
 
             if(primaryAction == MenuService.CREATE_WIDGET){
+
                 // collect the widget data
-                Widget widget = menuService.promptForWidgetData();
+                Widget widget = menuService.promptForWidgetData(types);
 
                 // save the widget
                 widgetService.createWidget(widget);
@@ -65,7 +70,7 @@ public class Main {
 
                 if(widget != null){
                     // update the widget data
-                    widget = menuService.promptForWidgetData(widget);
+                    widget = menuService.promptForWidgetData(widget, types);
 
                     // update the widget
                     widgetService.updateWidget(widget);

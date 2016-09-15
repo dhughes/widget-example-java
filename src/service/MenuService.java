@@ -2,6 +2,7 @@ package service;
 
 import entity.Note;
 import entity.Widget;
+import entity.WidgetType;
 
 import java.util.List;
 import java.util.Scanner;
@@ -145,24 +146,79 @@ public class MenuService {
         widget.getNotes().add(note);
     }
 
-    public Widget promptForWidgetData() {
+    private String waitForStringInList(String prompt, List<WidgetType> options){
+
+        String validOptions = "";
+        for (WidgetType type : options){
+            validOptions += type.getType() + ", ";
+        }
+
+        String fullPrompt = prompt + "(" + validOptions.substring(0, validOptions.length()-2) + ")";
+
+        String input = waitForString(fullPrompt, true);
+
+        // make sure my input is one of the valid options
+        for(WidgetType type : options){
+            if(type.getType().equals(input)){
+                return input;
+            }
+        }
+
+        System.out.println("Please select from the list of valid options!");
+
+        // prompt until someone does something not wrong
+        return waitForStringInList(prompt, options);
+    }
+
+    private String waitForStringInList(String prompt, List<WidgetType> options, String def){
+
+        String validOptions = "";
+        for (WidgetType type : options){
+            validOptions += type.getType() + ", ";
+        }
+
+        String fullPrompt = prompt + "(" + validOptions.substring(0, validOptions.length()-2) + ")";
+
+        String input = waitForString(fullPrompt, def);
+
+        // make sure my input is one of the valid options
+        for(WidgetType type : options){
+            if(type.getType().equals(input)){
+                return input;
+            }
+        }
+
+        System.out.println("Please select from the list of valid options!");
+
+        // prompt until someone does something not wrong
+        return waitForStringInList(prompt, options);
+
+
+    }
+
+    public Widget promptForWidgetData(List<WidgetType> options) {
         System.out.println("\n-- Create a Widget --\n");
 
         String name = waitForString("Name: ", true);
+        String type = waitForStringInList("Type: ", options);
         double width = waitForDouble("Width: ", true);
         double height = waitForDouble("Height: ", true);
         double length = waitForDouble("Length: ", true);
         double weight = waitForDouble("Weight: ", true);
 
-        return new Widget(name, width, height, length, weight);
+        return new Widget(name, type, width, height, length, weight);
     }
 
-    public Widget promptForWidgetData(Widget widget) {
+    public Widget promptForWidgetData(Widget widget, List<WidgetType> options) {
         System.out.println("\n-- Edit a Widget --\n");
 
         String name = waitForString(
                 String.format("Name [%s]: ", widget.getName()),
                 widget.getName());
+        String type = waitForStringInList(
+                String.format("Type [%s]: ", widget.getType()),
+                options,
+                widget.getType());
         double width = waitForDouble(
                 String.format("Width [%s]: ", widget.getWidth()),
                 widget.getWidth());
@@ -205,11 +261,13 @@ public class MenuService {
         System.out.printf("\n-- View a Widget --\n" +
                 "\n" +
                 "Name: %s\n" +
+                "Type: %s\n" +
                 "Width: %s\n" +
                 "Height: %s\n" +
                 "Length: %s\n" +
                 "Weight: %s\n",
                 widget.getName(),
+                widget.getType(),
                 widget.getWidth(),
                 widget.getHeight(),
                 widget.getLength(),
