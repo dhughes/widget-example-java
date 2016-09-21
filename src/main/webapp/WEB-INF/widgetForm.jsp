@@ -24,7 +24,9 @@
 
 <h2>Add / Edit a Widget</h2>
 
-<p>* indicates a required field</p>
+<p>All fields are required</p>
+
+**${errorMessages}**
 
 <form action="/widgetForm" method="post">
 

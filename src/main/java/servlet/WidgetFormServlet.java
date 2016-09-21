@@ -7,7 +7,6 @@ import service.WidgetService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -134,13 +133,13 @@ public class WidgetFormServlet extends AbstractServlet {
                 }
 
                 // redirect to the list of widgets
-                resp.sendRedirect("/listWidgets");
+                resp.sendRedirect("/");
             } else {
                 // TODO: add error messages to the attributes!!
                 req.getRequestDispatcher("WEB-INF/widgetForm.jsp").forward(req, resp);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             throw new ServletException("Something went wrong", e);
         }
 
