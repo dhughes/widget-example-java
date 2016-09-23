@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
+<!--/*@thymesVar id="note" type="com.theironyard.entity.Note"*/-->
+<!--/*@thymesVar id="notes" type="java.util.List<Note>"*/-->
+
+<head>
+    <title th:text="#{widget.warehouse}">Widget Warehouse</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
+</head>
+<body>
+
+<h1 th:text="#{widget.warehouse}">Widget Warehouse</h1>
+
+<ul class="nav">
+    <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
+    <li><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+</ul>
+
+<h2 th:text="#{widget.notes}">Widget Notes</h2>
+
+<div class="widget">
+    <img th:src="@{/images/Margaret_Hamilton.gif}" src="../static/images/Margaret_Hamilton.gif" />
+
+    <div class="detail" th:object="${widget}">
+        <a th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
+        <br/>
+
+        <strong th:text="#{widget.typeLabel}">Type:</strong>
+        <span th:text="*{type.type}">Spring</span>
+        <br/>
+
+        <strong th:text="#{widget.widthLabel}">Width:</strong>
+        <span th:text="*{width}">5</span>
+        <br/>
+
+        <strong th:text="#{widget.heightLabel}">Height:</strong>
+        <span th:text="*{height}">5</span>
+        <br/>
+
+        <strong th:text="#{widget.lengthLabel}">Length:</strong>
+        <span th:text="*{length}">8</span>
+        <br/>
+
+        <strong th:text="#{widget.weightLabel}">Weight:</strong>
+        <span th:text="*{weight}">0.125</span>
+        <br/>
+    </div>
+</div>
+
+<table th:if="${widget.notes.size() gt 0}">
+    <tr>
+        <th>Date</th>
+        <th>Note</th>
+        <th></th>
+    </tr>
+
+    <tr th:each="note : ${widget.notes}">
+        <td th:text="${#dates.format(note.date, 'MM/dd/yyyy h:mm a')}">
+            1/1/2016
+        </td>
+        <td th:text="${note.text}">
+            This is the note's text. Woot!
+        </td>
+        <td>
+            <a href="widgetNotes.html" th:href="@{/deleteNote(id=${note.id})}"><img src="../static/images/delete.png" th:src="@{/images/delete.png}" alt="Delete" th:alt="#{widgetNotes.delete}" /></a>
+        </td>
+    </tr>
+</table>
+
+<div th:if="${widget.notes.size() eq 0}" th:text="#{widgetNotes.noNotes}"></div>
+
+
+<form action="widgetNotes.html" th:action="@{/widgetNotes}" th:object="${note}" method="post">
+
+    <input type="hidden" name="id" value="" th:value="*{id}" />
+
+    <input type="hidden" name="widgetId" value="" th:value="${widget.id}" />
+
+    <div>
+        <label for="text" class="noteLabel" th:text="#{widgetNotes.addANoteLabel}">
+            Add a note:
+        </label>
+        <textarea name="text" id="text" th:text="*{text}"></textarea>
+        <ul class="error notes"><li th:each="err : ${#fields.errors('text')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <button th:text="#{widgetNotes.addNote}">Add Note</button>
+</form>
+
+</body>
+</html>

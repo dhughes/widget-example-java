@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
+<!--/*@thymesVar id="types" type="java.util.List<Type>"*/-->
+<!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
+<head>
+
+    <title th:text="${widget.id eq null ? #messages.msg('widget.addAWidget') : #messages.msg('widget.editAWidget')}">Add / Edit a Widget</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
+</head>
+<body>
+
+<h1 th:text="#{widget.warehouse}">Widget Warehouse</h1>
+
+<ul class="nav">
+    <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
+    <li><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+</ul>
+
+<h2 th:text="${widget.id eq null ? #messages.msg('widget.addAWidget') : #messages.msg('widget.editAWidget')}">Add / Edit a Widget</h2>
+
+<p th:text="#{widgetForm.allFieldsRequired}">All fields are required</p>
+
+<form action="widgetForm.html" th:action="@{/editWidget}" th:object="${widget}" method="post">
+
+    <input type="hidden" name="id" value="" th:value="*{id}" />
+
+    <div>
+        <label for="name" th:text="#{widgetForm.nameLabel}">
+            Name:
+        </label>
+        <input type="text" name="name" id="name" value="" th:value="*{name}" />
+        <ul class="error"><li th:each="err : ${#fields.errors('name')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="type" th:text="#{widget.typeLabel}">
+            Type:
+        </label>
+        <select name="type" id="type" th:field="*{type}">
+            <option value=""></option>
+            <option th:each="type : ${types}"
+                    th:value="${type.id}"
+                    th:text="${type.type}">Pinion</option>
+        </select>
+        <ul class="error"><li th:each="err : ${#fields.errors('type')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="width" th:text="#{widget.widthLabel}">
+            Width:
+        </label>
+        <input type="text" name="width" id="width" value="" th:value="*{width}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('width')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="length" th:text="#{widget.lengthLabel}">
+            Length:
+        </label>
+        <input type="text" name="length" id="length" value="" th:value="*{length}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('length')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="height" th:text="#{widget.heightLabel}">
+            Height:
+        </label>
+        <input type="text" name="height" id="height" value="" th:value="*{height}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('height')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="weight" th:text="#{widget.weightLabel}">
+            Weight:
+        </label>
+        <input type="text" name="weight" id="weight" value="" th:value="*{weight}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('weight')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <!-- image upload would go here -->
+
+    <button th:text="#{widgetForm.saveWidget}">Save Widget</button>
+</form>
+
+</body>
+</html>

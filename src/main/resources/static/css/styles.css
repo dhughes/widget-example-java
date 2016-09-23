@@ -1,0 +1,133 @@
+body{
+    font-family: sans-serif;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.nav li{
+    display: inline-block;
+    border: 1px solid black;
+    padding: 0.25em;
+}
+
+li a{
+    text-decoration: none;
+}
+
+.widget{
+    border: 1px solid black;
+    clear: both;
+    margin: 1em 0 1em 0;
+    padding: 1em;
+}
+
+.widget img{
+    max-width: 100%;
+    max-height: 200px;
+    display: inline-block;
+    margin-right: 1em;
+    vertical-align: top;
+}
+
+
+.detail{
+    display: inline-block;
+}
+
+h1{
+    color: goldenrod;
+    background-color: #eeeeee;
+    padding: 0.5em 1em;
+}
+
+label{
+    display: inline-block;
+    width: 75px;
+}
+
+
+
+form > div{
+    margin: 0.5em 0;
+}
+
+table{
+    border-collapse: collapse;
+    margin: 1em 0 1em 0 ;
+}
+
+table tr td:first-child{
+    white-space: nowrap;
+}
+
+table tr th:nth-child(2){
+    width: 100%;
+}
+
+th, td{
+    margin: 0;
+    border: 1px solid black;
+    padding: 0.25em;
+    text-align: left;
+
+}
+
+.noteLabel{
+    display: block;
+    width: 100%
+}
+
+textarea {
+    width: 40em;
+    height: 5em;
+}
+
+label.search{
+    display: block;
+    width: auto;
+}
+
+.error{
+    color:red;
+    font-size: x-small;
+    margin-left:90px;
+    list-style: disc;
+}
+
+.error.notes{
+    margin-left: 1em;
+}
+
+textarea{
+    width: 100%;
+}
+
+@media (max-width: 300px) {
+    .widget img{
+        width: 100%!important;
+        max-height: none;
+    }
+    label{
+        display: block;
+    }
+
+    input, select{
+        width: 100%;
+    }
+
+    ul.nav li{
+        display: block;
+    }
+
+    .error{
+        margin-left: 1em;
+    }
+
+    table tr td:first-child{
+        white-space: normal;
+    }
+}
