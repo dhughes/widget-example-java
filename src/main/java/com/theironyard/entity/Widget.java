@@ -47,6 +47,12 @@ public class Widget {
     @NotNull
     private Type type;
 
+    @Lob
+    @Basic(fetch=FetchType.EAGER)
+    private byte[] image;
+
+    private String contentType;
+
     // no arg constructor
     public Widget() {
     }
@@ -149,6 +155,22 @@ public class Widget {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }
 

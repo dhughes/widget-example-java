@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ public class WidgetService {
         return typeRepository.findAll(new Sort(Sort.Direction.ASC, "type"));
     }
 
+    @Transactional
     public Page<Widget> listWidgets(Search search, Pageable pageable) {
         // take note of the getNameForSearch() method. It returns null OR the search string with % before and after it
         return widgetRepository.search(search.getNameForSearch(), search.getTypeId(), search.getId(), pageable);

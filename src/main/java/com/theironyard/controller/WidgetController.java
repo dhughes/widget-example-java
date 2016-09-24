@@ -11,16 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Controller
 public class WidgetController {
@@ -34,7 +38,7 @@ public class WidgetController {
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String listWidgets(Search search, @PageableDefault(size = 5) Pageable pageable, BindingResult bindingResult, Model model, HttpSession session){
+    public String listWidgets(Search search, @PageableDefault(size = 5, sort = "name") Pageable pageable, BindingResult bindingResult, Model model, HttpSession session){
 
         // list the widget types we have
         model.addAttribute("types", widgetService.listWidgetTypes());
@@ -70,7 +74,7 @@ public class WidgetController {
     }
 
     @RequestMapping(path = "/editWidget", method = RequestMethod.POST)
-    public String editWidget(@Valid Widget widget, BindingResult bindingResult, Model model, HttpSession session){
+    public String editWidget(@Valid Widget widget, BindingResult bindingResult, @RequestParam(name = "file") MultipartFile file, Model model, HttpSession session){
 
         // the user must be logged in
         if(session.getAttribute("userId") == null){
@@ -83,6 +87,16 @@ public class WidgetController {
 
             return "widgetForm";
         } else {
+
+            if (!file.isEmpty()) {
+                try {
+                    widget.setImage(file.getBytes());
+                    widget.setContentType(file.getContentType());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             widgetService.saveWidget(widget);
             return "redirect:/";
         }
@@ -226,6 +240,25 @@ public class WidgetController {
         return "redirect:/listUsers";
     }
 
+    @GetMapping("/widget/image")
+    @ResponseBody
+    public ResponseEntity serveFile(Integer id) throws URISyntaxException {
+
+        Widget widget = widgetService.getWidget(id);
+
+
+        if(widget.getContentType() != null){
+            return ResponseEntity
+                    .ok()
+                    .header(HttpHeaders.CONTENT_TYPE, widget.getContentType())
+                    .body(widget.getImage());
+        } else {
+            return ResponseEntity
+                    .status(301)
+                    .location(new URI("/images/questionMark.png"))
+                    .build();
+        }
+    }
 
 
 }

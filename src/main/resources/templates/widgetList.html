@@ -68,7 +68,7 @@
     </div>
 
     <div th:each="widget : ${widgets}" class="widget">
-        <img th:src="@{/images/Margaret_Hamilton.gif}" src="../static/images/Margaret_Hamilton.gif" />
+        <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
 
         <div class="detail" th:object="${widget}">
             <a class="widgetName" th:if="${user}" th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
