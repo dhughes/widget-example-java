@@ -260,5 +260,16 @@ public class WidgetController {
         }
     }
 
+    @RequestMapping(path = "/deleteWidget")
+    public String deleteWidget(Integer id, HttpSession session){
 
+        // the user must be logged in
+        if(session.getAttribute("userId") == null){
+            return "redirect:/login";
+        }
+
+        widgetService.deleteWidget(id);
+
+        return "redirect:/";
+    }
 }

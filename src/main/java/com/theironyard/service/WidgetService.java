@@ -140,4 +140,8 @@ public class WidgetService {
     public void deleteUser(Integer id) {
         userRepository.delete(id);
     }
+
+    public void deleteWidget(Integer id) {
+        widgetRepository.delete(id);
+    }
 }

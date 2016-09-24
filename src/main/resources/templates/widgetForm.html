@@ -24,6 +24,10 @@
 
 <h2 th:text="${widget.id eq null ? #messages.msg('widget.addAWidget') : #messages.msg('widget.editAWidget')}">Add / Edit a Widget</h2>
 
+<ul class="nav">
+    <li th:if="${user}"><a th:href="@{/deleteWidget(id=${widget.id})}" href="widgetList.html" th:text="#{widget.deleteThisWidget}">Delete This Widget</a></li>
+</ul>
+
 <p th:text="#{widgetForm.allFieldsRequired}">All fields are required</p>
 
 <form action="widgetForm.html" th:action="@{/editWidget}" th:object="${widget}" method="post" enctype="multipart/form-data">
