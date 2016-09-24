@@ -84,6 +84,13 @@
     </div>
 
     <div>
+        <label for="file" th:text="#{widget.currentImageLabel}">
+            Current Image:
+        </label>
+        <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
+    </div>
+
+    <div>
         <label for="file" th:text="#{widget.imageLabel}">
             Image:
         </label>

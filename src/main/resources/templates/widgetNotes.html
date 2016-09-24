@@ -26,10 +26,10 @@
 <h2 th:text="#{widget.notes}">Widget Notes</h2>
 
 <div class="widget">
-    <img th:src="@{/images/Margaret_Hamilton.gif}" src="../static/images/Margaret_Hamilton.gif" />
+    <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
 
     <div class="detail" th:object="${widget}">
-        <a th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
+        <span class="widgetName" th:text="*{name}">Small Coiled Spring</span>
         <br/>
 
         <strong th:text="#{widget.typeLabel}">Type:</strong>

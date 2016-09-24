@@ -54,6 +54,7 @@ h1{
 label{
     display: inline-block;
     width: 75px;
+    vertical-align: top;
 }
 
 
