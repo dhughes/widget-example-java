@@ -7,6 +7,8 @@ import com.theironyard.entity.Widget;
 import com.theironyard.repository.TypeRepository;
 import com.theironyard.repository.WidgetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +27,9 @@ public class WidgetService {
         return typeRepository.findAll(new Sort(Sort.Direction.ASC, "type"));
     }
 
-    public List<Widget> listWidgets(Search search) {
+    public Page<Widget> listWidgets(Search search, Pageable pageable) {
         // take note of the getNameForSearch() method. It returns null OR the search string with % before and after it
-        return widgetRepository.search(search.getNameForSearch(), search.getTypeId(), search.getId());
+        return widgetRepository.search(search.getNameForSearch(), search.getTypeId(), search.getId(), pageable);
     }
 
     @Transactional // this is required to be able to load the notes

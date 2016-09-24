@@ -3,9 +3,10 @@
 
 <!--/*@thymesVar id="search" type="com.theironyard.bean.Search"*/-->
 <!--/*@thymesVar id="types" type="java.util.List<Type>"*/-->
-<!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
-<!--/*@thymesVar id="widgets" type="java.util.List<Widget>"*/-->
+<!--/*@thymesVar id="widgets" type="org.springframework.data.domain.Page<Widget>"*/-->
 <!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
+<!--/*@thymesVar id="pageable" type="org.springframework.data.domain.PageRequest"*/-->
+<!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
 <head>
     <title th:text="#{widget.warehouse}">Widget Warehouse</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
@@ -27,7 +28,7 @@
     </label>
     <input type="text" name="name" id="name" th:value="*{name}" placeholder="Name" th:placeholder="#{widgetSearch.name}" />
 
-    <select name="typeId" th:field="*{typeId}" title="">
+    <select name="typeId" th:field="*{typeId}">
         <option value=""></option>
         <option th:each="type : ${types}"
                 th:value="${type.id}"
@@ -42,6 +43,19 @@
 <!-- main section of my page -->
 <section>
 
+    <div class="pagination">
+        <span th:text="#{widgetList.pageOf(${pageable.offset + 1}, ${pageable.offset + widgets.numberOfElements}, ${widgets.totalElements})}">1 - 10 of 54</span>
+        <a href="widgetList.html"
+           th:href="@{/(page=${pageable.previousOrFirst().pageNumber}, name=${search.name}, typeId=${search.typeId}, id=${search.id})}">
+            <button disabled="disabled"
+                    th:disabled="${widgets.isFirst()}"
+                    th:text="#{widgetList.back}">Back</button></a>
+
+        <a href="widgetList.html"
+           th:href="@{/(page=${pageable.next().pageNumber}, name=${search.name}, typeId=${search.typeId}, id=${search.id})}">
+            <button th:disabled="${widgets.isLast()}"
+                    th:text="#{widgetList.next}">Next</button></a>
+    </div>
 
     <div th:each="widget : ${widgets}" class="widget">
         <img th:src="@{/images/Margaret_Hamilton.gif}" src="../static/images/Margaret_Hamilton.gif" />

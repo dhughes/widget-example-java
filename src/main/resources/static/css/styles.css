@@ -33,6 +33,13 @@ li a{
     vertical-align: top;
 }
 
+.pagination{
+    margin: 1em 0;
+}
+
+form input, form select, form button{
+    margin: 0.2em 0;
+}
 
 .detail{
     display: inline-block;

@@ -6,6 +6,9 @@ import com.theironyard.entity.Type;
 import com.theironyard.entity.Widget;
 import com.theironyard.service.WidgetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,14 +27,16 @@ public class WidgetController {
     WidgetService widgetService;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String listWidgets(Search search, BindingResult bindingResult, Model model){
+    public String listWidgets(Search search, @PageableDefault(size = 5) Pageable pageable, BindingResult bindingResult, Model model){
 
         // list the widget types we have
         model.addAttribute("types", widgetService.listWidgetTypes());
 
         // get the widgets matching this search
-        List<Widget> widgets = widgetService.listWidgets(search);
+        Page<Widget> widgets = widgetService.listWidgets(search, pageable);
         model.addAttribute("widgets", widgets);
+        model.addAttribute("pageable", pageable);
+
 
         return "widgetList";
     }
