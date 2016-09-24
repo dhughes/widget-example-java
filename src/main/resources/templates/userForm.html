@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="user" type="com.theironyard.entity.User"*/-->
+<!--/*@thymesVar id="editUser" type="com.theironyard.entity.User"*/-->
+<head>
+
+    <title th:text="${editUser.id eq null ? #messages.msg('user.addAUser') : #messages.msg('user.editAUser')}">Add / Edit a User</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
+</head>
+<body>
+
+<h1 th:text="#{widget.warehouse}">Widget Warehouse</h1>
+
+<ul class="nav">
+    <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
+    <li th:if="${user}"><a th:href="@{/listUsers}" href="userList.html" th:text="#{widget.listUsers}">List Users</a></li>
+    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}">Logout</a></li>
+    <li th:unless="${user}"><a th:href="@{/login}" href="loginForm.html" th:text="#{widget.login}">Login</a></li>
+</ul>
+
+<!--/* greeting */-->
+<div class="greeting" th:if="${user}" th:text="#{welcomeMessage(${user.name})}">user</div>
+
+<h2 th:text="${editUser.id eq null ? #messages.msg('user.addAUser') : #messages.msg('user.editAUser')}">Add / Edit a Widget</h2>
+
+<p th:text="#{userForm.allFieldsRequired}">All fields are required</p>
+
+<form action="userForm.html" th:action="@{/editUser}" th:object="${editUser}" method="post">
+
+    <input type="hidden" name="id" value="" th:value="*{id}" />
+
+    <div>
+        <label for="name" th:text="#{userForm.nameLabel}">
+            Name:
+        </label>
+        <input type="text" name="name" id="name" value="" th:value="*{name}" />
+        <ul class="error"><li th:each="err : ${#fields.errors('name')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="email" th:text="#{userForm.emailLabel}">
+            Email:
+        </label>
+        <input type="text" name="email" id="email" value="" th:value="*{email}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('email')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="password" th:text="#{userForm.passwordLabel}">
+            Password:
+        </label>
+        <input type="password" name="password" id="password" value="" th:value="*{password}"/>
+        <ul class="error"><li th:each="err : ${#fields.errors('password')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <button th:text="#{userForm.saveUser}">Save User</button>
+</form>
+
+</body>
+</html>

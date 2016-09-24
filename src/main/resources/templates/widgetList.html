@@ -7,6 +7,7 @@
 <!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
 <!--/*@thymesVar id="pageable" type="org.springframework.data.domain.PageRequest"*/-->
 <!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
+<!--/*@thymesVar id="user" type="com.theironyard.entity.User"*/-->
 <head>
     <title th:text="#{widget.warehouse}">Widget Warehouse</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
@@ -17,10 +18,19 @@
 
 <ul class="nav">
     <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
-    <li><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+    <li th:if="${user}"><a th:href="@{/listUsers}" href="userList.html" th:text="#{widget.listUsers}">List Users</a></li>
+    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}">Logout</a></li>
+    <li th:unless="${user}"><a th:href="@{/login}" href="loginForm.html" th:text="#{widget.login}">Login</a></li>
 </ul>
 
+<!--/* greeting */-->
+<div class="greeting" th:if="${user}" th:text="#{welcomeMessage(${user.name})}">Welcome back, Chris Smith</div>
+
 <h2>List Widgets</h2>
+
+<ul class="nav">
+    <li th:if="${user}"><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+</ul>
 
 <form th:action="@{/}" th:object="${search}" action="widgetList.html" method="get">
     <label for="name" class="search" th:text="#{widgetSearch.searchForAWidgetLabel}">
@@ -61,7 +71,8 @@
         <img th:src="@{/images/Margaret_Hamilton.gif}" src="../static/images/Margaret_Hamilton.gif" />
 
         <div class="detail" th:object="${widget}">
-            <a th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
+            <a class="widgetName" th:if="${user}" th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
+            <span class="widgetName" th:unless="${user}" th:text="*{name}">Small Coiled Spring</span>
             <br/>
 
             <strong th:text="#{widget.typeLabel}">Type:</strong>

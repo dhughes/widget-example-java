@@ -15,8 +15,13 @@
 
 <ul class="nav">
     <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
-    <li><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+    <li th:if="${user}"><a th:href="@{/listUsers}" href="userList.html" th:text="#{widget.listUsers}">List Users</a></li>
+    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}">Logout</a></li>
+    <li th:unless="${user}"><a th:href="@{/login}" href="loginForm.html" th:text="#{widget.login}">Login</a></li>
 </ul>
+
+<!--/* greeting */-->
+<div class="greeting" th:if="${user}" th:text="#{welcomeMessage(${user.name})}">user</div>
 
 <h2 th:text="#{widget.notes}">Widget Notes</h2>
 
@@ -71,8 +76,7 @@
 
 <div th:if="${widget.notes.size() eq 0}" th:text="#{widgetNotes.noNotes}"></div>
 
-
-<form action="widgetNotes.html" th:action="@{/widgetNotes}" th:object="${note}" method="post">
+<form th:if="${user}" action="widgetNotes.html" th:action="@{/widgetNotes}" th:object="${note}" method="post">
 
     <input type="hidden" name="id" value="" th:value="*{id}" />
 

@@ -3,7 +3,7 @@ body{
 }
 
 ul{
-    margin: 0;
+    margin: 1em 0;
     padding: 0;
     list-style: none;
 }
@@ -49,6 +49,7 @@ h1{
     color: goldenrod;
     background-color: #eeeeee;
     padding: 0.5em 1em;
+    margin: -8px -8px 0 -8px ;
 }
 
 label{
@@ -109,8 +110,23 @@ label.search{
     margin-left: 1em;
 }
 
+p.error{
+    font-size: 1em;
+    margin-left: 0;
+}
+
 textarea{
     width: 100%;
+}
+
+.greeting{
+    font-style: italic;
+    font-size: small;
+}
+
+.widgetName{
+    font-weight: bold;
+    font-size: 1.25em;
 }
 
 @media (max-width: 300px) {

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!--/*@thymesVar id="login" type="com.theironyard.bean.Login"*/-->
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
+</head>
+<body>
+
+<h1 th:text="#{widget.warehouse}">Widget Warehouse</h1>
+
+<ul class="nav">
+    <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
+    <li th:if="${user}"><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
+    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}">Logout</a></li>
+    <li th:unless="${user}"><a th:href="@{/login}" href="loginForm.html" th:text="#{widget.login}">Login</a></li>
+</ul>
+
+<h2 th:text="#{widget.login}">Login</h2>
+
+<form action="widgetList.html" th:action="@{/login}" th:object="${login}" method="post">
+    <p th:if="*{loginFailed}" class="error" th:text="#{loginForm.loginFailed}">Login Failed!!!</p>
+
+    <div>
+        <label for="email" th:text="#{loginForm.emailLabel}">
+            Email:
+        </label>
+        <input type="email" name="email" id="email" value="" th:value="*{email}" />
+        <ul class="error"><li th:each="err : ${#fields.errors('email')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <div>
+        <label for="password" th:text="#{loginForm.passwordLabel}">
+            Password:
+        </label>
+        <input type="password" name="password" id="password" value="" />
+        <ul class="error"><li th:each="err : ${#fields.errors('password')}" th:text="${err}">Error!</li></ul>
+    </div>
+
+    <button th:text="#{loginForm.login}">Login!</button>
+</form>
+
+</body>
+</html>
