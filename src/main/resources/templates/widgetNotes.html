@@ -29,28 +29,32 @@
     <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
 
     <div class="detail" th:object="${widget}">
-        <span class="widgetName" th:text="*{name}">Small Coiled Spring</span>
-        <br/>
+        <div>
+            <span class="widgetName" th:text="*{name}">Small Coiled Spring</span>
+        </div>
 
-        <strong th:text="#{widget.typeLabel}">Type:</strong>
-        <span th:text="*{type.type}">Spring</span>
-        <br/>
-
-        <strong th:text="#{widget.widthLabel}">Width:</strong>
-        <span th:text="*{width}">5</span>
-        <br/>
-
-        <strong th:text="#{widget.heightLabel}">Height:</strong>
-        <span th:text="*{height}">5</span>
-        <br/>
-
-        <strong th:text="#{widget.lengthLabel}">Length:</strong>
-        <span th:text="*{length}">8</span>
-        <br/>
-
-        <strong th:text="#{widget.weightLabel}">Weight:</strong>
-        <span th:text="*{weight}">0.125</span>
-        <br/>
+        <table>
+            <tr>
+                <th th:text="#{widget.typeLabel}">Type:</th>
+                <td>
+                    <ul th:each="type : *{types}">
+                        <li th:text="${type.type}">Spring</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.widthLabel}">Width:</th>
+                <td th:text="*{width}">5</td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.heightLabel}">Height:</th>
+                <td th:text="*{height}">5</td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.lengthLabel}">Length:</th>
+                <td th:text="*{length}">8</td>
+            </tr>
+        </table>
     </div>
 </div>
 

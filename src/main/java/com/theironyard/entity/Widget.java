@@ -8,7 +8,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -43,9 +45,9 @@ public class Widget {
     @JoinColumn(name = "widget_id", nullable = false)
     private Set<Note> notes = new HashSet<>();
 
-    @ManyToOne
+    @ManyToMany
     @NotNull
-    private Type type;
+    private List<Type> types = new ArrayList<>();
 
     @Lob
     @Basic(fetch=FetchType.EAGER)
@@ -74,24 +76,6 @@ public class Widget {
         this.weight = weight;
     }
 
-    public Widget(Integer id, String name, Type type, Double width, Double height, Double length, Double weight) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.width = width;
-        this.height = height;
-        this.length = length;
-        this.weight = weight;
-    }
-
-    public Widget(String name, Type type, Double width, Double height, Double length, Double weight) {
-        this.name = name;
-        this.type = type;
-        this.width = width;
-        this.height = height;
-        this.length = length;
-        this.weight = weight;
-    }
 
     public Integer getId() {
         return id;
@@ -149,12 +133,12 @@ public class Widget {
         this.notes = notes;
     }
 
-    public Type getType() {
-        return type;
+    public List<Type> getTypes() {
+        return types;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setTypes(List<Type> types) {
+        this.types = types;
     }
 
     public byte[] getImage() {

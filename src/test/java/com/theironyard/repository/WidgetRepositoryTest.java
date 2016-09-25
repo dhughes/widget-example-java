@@ -47,16 +47,16 @@ public class WidgetRepositoryTest {
 
         // setup some widgets
         widget1 = new Widget("widget 1", 1d, 2d, 3d, 4d);
-        widget1.setType(type1);
+        widget1.getTypes().add(type1);
 
         widget2 = new Widget("widget experiment 2", 2d, 3d, 4d, 1d);
-        widget2.setType(type2);
+        widget2.getTypes().add(type2);
 
         widget3 = new Widget("test widget 3", 3d, 4d, 1d, 2d);
-        widget3.setType(type1);
+        widget3.getTypes().add(type1);
 
         widget4 = new Widget("test 4", 4d, 1d, 2d, 3d);
-        widget4.setType(type3);
+        widget4.getTypes().add(type3);
 
         // persist the widgets
         entityManager.persist(widget1);
@@ -139,7 +139,7 @@ public class WidgetRepositoryTest {
         // arrange
 
         // act
-        List<Widget> widgets = widgetRepository.search("%widget%", type1.getId(), null);
+        List<Widget> widgets = widgetRepository.search("%widget%", type1, null);
 
         // assert
         assertThat(widgets.size(), is(2));
@@ -155,7 +155,7 @@ public class WidgetRepositoryTest {
         // arrange
 
         // act
-        List<Widget> widgets = widgetRepository.search("", type1.getId(), null);
+        List<Widget> widgets = widgetRepository.search("", type1, null);
 
         // assert
         assertThat(widgets.size(), is(2));
@@ -188,7 +188,7 @@ public class WidgetRepositoryTest {
         // arrange
 
         // act
-        List<Widget> widgets = widgetRepository.search("%widget%", widget3.getType().getId(), widget3.getId());
+        List<Widget> widgets = widgetRepository.search("%widget%", widget3.getTypes().get(0), widget3.getId());
 
         // assert
         assertThat(widgets.size(), is(1));

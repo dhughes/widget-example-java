@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
 <!--/*@thymesVar id="types" type="java.util.List<Type>"*/-->
-<!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
 <head>
 
     <title th:text="${widget.id eq null ? #messages.msg('widget.addAWidget') : #messages.msg('widget.editAWidget')}">Add / Edit a Widget</title>
@@ -43,16 +42,21 @@
     </div>
 
     <div>
-        <label for="type" th:text="#{widget.typeLabel}">
+        <label th:text="#{widget.typeLabel}">
             Type:
         </label>
-        <select name="type" id="type" th:field="*{type}">
+        <div class="types" th:each="type : ${types}">
+            <input type="checkbox" th:field="*{types}" th:value="${type.id}" />
+            <label th:for="${#ids.prev('types')}"
+                   th:text="${type.type}">Gizmo</label>
+        </div>
+        <!--/* <select name="type" id="type" th:field="*{type}">
             <option value=""></option>
             <option th:each="type : ${types}"
                     th:value="${type.id}"
                     th:text="${type.type}">Pinion</option>
-        </select>
-        <ul class="error"><li th:each="err : ${#fields.errors('type')}" th:text="${err}">Error!</li></ul>
+        </select> */-->
+        <ul class="error"><li th:each="err : ${#fields.errors('types')}" th:text="${err}">Error!</li></ul>
     </div>
 
     <div>

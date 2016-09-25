@@ -5,13 +5,13 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 public class Type {
 
     @Id
     @GeneratedValue
-    @NotNull
     private Integer id;
 
     @NotBlank
@@ -44,4 +44,5 @@ public class Type {
     public void setType(String type) {
         this.type = type;
     }
+
 }

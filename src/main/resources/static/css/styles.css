@@ -40,8 +40,26 @@ form input, form select, form button{
     margin: 0.2em 0;
 }
 
+input[type='text']{
+    width: 20em;
+}
+
 .detail{
     display: inline-block;
+}
+
+.detail ul{
+    display: block;
+    margin: auto 1em;
+    list-style: disc;
+}
+
+.detail li{
+    display: list-item;
+}
+.detail strong{
+    display: inline-block;
+    width: 75px;
 }
 
 h1{
@@ -55,9 +73,8 @@ label{
     display: inline-block;
     width: 75px;
     vertical-align: top;
+    font-weight: bold;
 }
-
-
 
 form > div{
     margin: 0.5em 0;
@@ -127,6 +144,7 @@ textarea{
 .widgetName{
     font-weight: bold;
     font-size: 1.25em;
+    margin-bottom: 0.5em;
 }
 
 @media (max-width: 300px) {

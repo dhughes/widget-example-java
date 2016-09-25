@@ -33,8 +33,10 @@ public class WidgetController {
     WidgetService widgetService;
 
     @PostConstruct
-    public void afterInit(){
+    public void afterInit() throws IOException {
         widgetService.createDefaultAdminUser();
+        widgetService.createDefaultTypes();
+        widgetService.createDefaultWidgets();
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -88,16 +90,7 @@ public class WidgetController {
             return "widgetForm";
         } else {
 
-            if (!file.isEmpty()) {
-                try {
-                    widget.setImage(file.getBytes());
-                    widget.setContentType(file.getContentType());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            widgetService.saveWidget(widget);
+            widgetService.saveWidget(widget, file);
             return "redirect:/";
         }
     }

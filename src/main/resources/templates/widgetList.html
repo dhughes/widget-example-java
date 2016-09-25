@@ -6,7 +6,6 @@
 <!--/*@thymesVar id="widgets" type="org.springframework.data.domain.Page<Widget>"*/-->
 <!--/*@thymesVar id="widget" type="com.theironyard.entity.Widget"*/-->
 <!--/*@thymesVar id="pageable" type="org.springframework.data.domain.PageRequest"*/-->
-<!--/*@thymesVar id="type" type="com.theironyard.entity.Type"*/-->
 <!--/*@thymesVar id="user" type="com.theironyard.entity.User"*/-->
 <head>
     <title th:text="#{widget.warehouse}">Widget Warehouse</title>
@@ -71,34 +70,41 @@
         <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
 
         <div class="detail" th:object="${widget}">
-            <a class="widgetName" th:if="${user}" th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
-            <span class="widgetName" th:unless="${user}" th:text="*{name}">Small Coiled Spring</span>
-            <br/>
+            <div>
+                <a class="widgetName" th:if="${user}" th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
+                <span class="widgetName" th:unless="${user}" th:text="*{name}">Small Coiled Spring</span>
+            </div>
 
-            <strong th:text="#{widget.typeLabel}">Type:</strong>
-            <span th:text="*{type.type}">Spring</span>
-            <br/>
-
-            <strong th:text="#{widget.widthLabel}">Width:</strong>
-            <span th:text="*{width}">5</span>
-            <br/>
-
-            <strong th:text="#{widget.heightLabel}">Height:</strong>
-            <span th:text="*{height}">5</span>
-            <br/>
-
-            <strong th:text="#{widget.lengthLabel}">Length:</strong>
-            <span th:text="*{length}">8</span>
-            <br/>
-
-            <strong th:text="#{widget.weightLabel}">Weight:</strong>
-            <span th:text="*{weight}">0.125</span>
-            <br/>
-
-            <strong th:text="#{widget.notesLabel}">Notes:</strong>
-            <a th:href="@{/widgetNotes(id=*{id})}" href="widgetNotes.html" th:text="#{widgetList.notesLink(*{notes.size()})}">
-                5 notes...
-            </a>
+            <table>
+                <tr>
+                    <th th:text="#{widget.typeLabel}">Type:</th>
+                    <td>
+                        <ul th:each="type : *{types}">
+                            <li th:text="${type.type}">Spring</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th th:text="#{widget.widthLabel}">Width:</th>
+                    <td th:text="*{width}">5</td>
+                </tr>
+                <tr>
+                    <th th:text="#{widget.heightLabel}">Height:</th>
+                    <td th:text="*{height}">5</td>
+                </tr>
+                <tr>
+                    <th th:text="#{widget.lengthLabel}">Length:</th>
+                    <td th:text="*{length}">8</td>
+                </tr>
+                <tr>
+                    <th th:text="#{widget.notesLabel}">Notes:</th>
+                    <td>
+                        <a th:href="@{/widgetNotes(id=*{id})}" href="widgetNotes.html" th:text="#{widgetList.notesLink(*{notes.size()})}">
+                            5 notes...
+                        </a>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
