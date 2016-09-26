@@ -25,6 +25,10 @@ li a{
     padding: 1em;
 }
 
+#template{
+    display: none;
+}
+
 .widget img{
     max-width: 200px;
     display: inline-block;
@@ -114,6 +118,13 @@ textarea {
 label.search{
     display: block;
     width: auto;
+}
+
+.searchForm{
+    border: 1px solid black;
+    border-radius: 0.5em;
+    margin:0.25em;
+    padding: 0.5em;
 }
 
 .error{

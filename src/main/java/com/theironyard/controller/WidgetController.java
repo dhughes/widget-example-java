@@ -40,15 +40,10 @@ public class WidgetController {
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String listWidgets(Search search, @PageableDefault(size = 5, sort = "name") Pageable pageable, BindingResult bindingResult, Model model, HttpSession session){
+    public String listWidgets(Model model, HttpSession session){
 
         // list the widget types we have
         model.addAttribute("types", widgetService.listWidgetTypes());
-
-        // get the widgets matching this search
-        Page<Widget> widgets = widgetService.listWidgets(search, pageable);
-        model.addAttribute("widgets", widgets);
-        model.addAttribute("pageable", pageable);
 
         // get the user (or null if not logged in)
         model.addAttribute("user", widgetService.getUserOrNull((Integer)session.getAttribute("userId")));

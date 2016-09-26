@@ -10,6 +10,11 @@
 <head>
     <title th:text="#{widget.warehouse}">Widget Warehouse</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" href="../static/css/styles.css" />
+
+    <script src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    <script src="../static/scripts/widgets.js" th:src="@{/scripts/widgets.js}"></script>
 </head>
 <body>
 
@@ -18,7 +23,7 @@
 <ul class="nav">
     <li><a th:href="@{/}" href="widgetList.html" th:text="#{widget.listWidgets}">List Widgets</a></li>
     <li th:if="${user}"><a th:href="@{/listUsers}" href="userList.html" th:text="#{widget.listUsers}">List Users</a></li>
-    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}">Logout</a></li>
+    <li th:if="${user}"><a th:href="@{/logout}" href="loginForm.html" th:text="#{widget.logout}" id="logout">Logout</a></li>
     <li th:unless="${user}"><a th:href="@{/login}" href="loginForm.html" th:text="#{widget.login}">Login</a></li>
 </ul>
 
@@ -31,84 +36,85 @@
     <li th:if="${user}"><a th:href="@{/editWidget}" href="widgetForm.html" th:text="#{widget.addAWidget}">Add a Widget</a></li>
 </ul>
 
-<form th:action="@{/}" th:object="${search}" action="widgetList.html" method="get">
+<form class="searchForm">
     <label for="name" class="search" th:text="#{widgetSearch.searchForAWidgetLabel}">
         Search for a widget:
     </label>
-    <input type="text" name="name" id="name" th:value="*{name}" placeholder="Name" th:placeholder="#{widgetSearch.name}" />
+    <input type="text" name="name" id="name" placeholder="Name" th:placeholder="#{widgetSearch.name}" />
+    <br />
 
-    <select name="typeId" th:field="*{typeId}">
+    <label for="typeId" class="search" th:text="#{widgetSearch.typeLabel}">
+        Type:
+    </label>
+    <select name="typeId" id="typeId">
         <option value=""></option>
         <option th:each="type : ${types}"
                 th:value="${type.id}"
                 th:text="${type.type}">Pinion</option>
     </select>
+    <br />
 
-    <input type="text" name="id" id="id" th:value="*{id}" placeholder="Id" th:placeholder="#{widgetSearch.id}" />
+    <label for="typeId" class="search" th:text="#{widgetSearch.idLabel}">
+        Id:
+    </label>
+    <input type="text" name="id" id="id" placeholder="Id" th:placeholder="#{widgetSearch.id}" />
+    <br />
 
-    <button th:text="#{widgetSearch.search}">Search</button>
+    <button id="search" th:text="#{widgetSearch.search}">Search</button>
+    <button id="reset" th:text="#{widgetSearch.reset}">Reset</button>
 </form>
 
+<!-- pagination -->
+<div class="pagination">
+    <span id="description"></span>
+    <a href="#"><button id="back" th:text="#{widgetList.back}">Back</button></a>
+    <a href="#"><button id="next" th:text="#{widgetList.next}">Next</button></a>
+</div>
+
 <!-- main section of my page -->
-<section>
-
-    <div class="pagination">
-        <span th:text="#{widgetList.pageOf(${pageable.offset + 1}, ${pageable.offset + widgets.numberOfElements}, ${widgets.totalElements})}">1 - 10 of 54</span>
-        <a href="widgetList.html"
-           th:href="@{/(page=${pageable.previousOrFirst().pageNumber}, name=${search.name}, typeId=${search.typeId}, id=${search.id})}">
-            <button disabled="disabled"
-                    th:disabled="${widgets.isFirst()}"
-                    th:text="#{widgetList.back}">Back</button></a>
-
-        <a href="widgetList.html"
-           th:href="@{/(page=${pageable.next().pageNumber}, name=${search.name}, typeId=${search.typeId}, id=${search.id})}">
-            <button th:disabled="${widgets.isLast()}"
-                    th:text="#{widgetList.next}">Next</button></a>
-    </div>
-
-    <div th:each="widget : ${widgets}" class="widget">
-        <img src="../static/images/Margaret_Hamilton.gif" th:src="@{/widget/image(id=${widget.id})}" />
-
-        <div class="detail" th:object="${widget}">
-            <div>
-                <a class="widgetName" th:if="${user}" th:href="@{/editWidget(id=*{id})}" th:text="*{name}" href="widgetForm.html">Small Coil Spring</a>
-                <span class="widgetName" th:unless="${user}" th:text="*{name}">Small Coiled Spring</span>
-            </div>
-
-            <table>
-                <tr>
-                    <th th:text="#{widget.typeLabel}">Type:</th>
-                    <td>
-                        <ul th:each="type : *{types}">
-                            <li th:text="${type.type}">Spring</li>
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th th:text="#{widget.widthLabel}">Width:</th>
-                    <td th:text="*{width}">5</td>
-                </tr>
-                <tr>
-                    <th th:text="#{widget.heightLabel}">Height:</th>
-                    <td th:text="*{height}">5</td>
-                </tr>
-                <tr>
-                    <th th:text="#{widget.lengthLabel}">Length:</th>
-                    <td th:text="*{length}">8</td>
-                </tr>
-                <tr>
-                    <th th:text="#{widget.notesLabel}">Notes:</th>
-                    <td>
-                        <a th:href="@{/widgetNotes(id=*{id})}" href="widgetNotes.html" th:text="#{widgetList.notesLink(*{notes.size()})}">
-                            5 notes...
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
+<section id="widgets">
 </section>
+
+<!-- this is a hidden template for displaying a widget -->
+<div class="widget" id="template">
+    <img src="" />
+
+    <div class="detail" th:object="${widget}">
+        <div class="widgetName">
+        </div>
+
+        <table>
+            <tr>
+                <th th:text="#{widget.typeLabel}">Type:</th>
+                <td>
+                    <ul class="types">
+                        <li>Spring</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.widthLabel}">Width:</th>
+                <td class="width">5</td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.heightLabel}">Height:</th>
+                <td class="height">5</td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.lengthLabel}">Length:</th>
+                <td class="length">8</td>
+            </tr>
+            <tr>
+                <th th:text="#{widget.notesLabel}">Notes:</th>
+                <td class="notesLink">
+                    <a href="widgetNotes.html">
+                        5 notes...
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>

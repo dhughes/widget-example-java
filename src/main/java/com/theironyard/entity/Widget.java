@@ -2,6 +2,7 @@ package com.theironyard.entity;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -51,8 +52,10 @@ public class Widget {
 
     @Lob
     @Basic(fetch=FetchType.EAGER)
+    @JsonIgnore
     private byte[] image;
 
+    @JsonIgnore
     private String contentType;
 
     // no arg constructor
