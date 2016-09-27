@@ -224,7 +224,7 @@ public class WidgetService {
             nut.getTypes().add(typeRepository.findByType("Thingamajig"));
             nut.getTypes().add(typeRepository.findByType("Tool"));
             nut.setContentType("image/png");
-            nut.setImage(readImage("./static/images/nut.png"));
+            nut.setImage(readImage("./src/main/resources/static/images/nut.png"));
             widgetRepository.save(nut);
 
             Widget joint = new Widget("Slip-on Expansion Joint with Clamps", 1d, 1d, 1.25, 0.5);
@@ -232,14 +232,14 @@ public class WidgetService {
             joint.getTypes().add(typeRepository.findByType("Thingamabob"));
             joint.getTypes().add(typeRepository.findByType("Thing"));
             joint.setContentType("image/png");
-            joint.setImage(readImage("./static/images/joint.png"));
+            joint.setImage(readImage("./src/main/resources/static/images/joint.png"));
             widgetRepository.save(joint);
 
             Widget saddle = new Widget("Flexible Saddle Tap for Pipe", 4.125, 4d, 14d, 1.1);
             saddle.getTypes().add(typeRepository.findByType("Contrivance"));
             saddle.getTypes().add(typeRepository.findByType("Doohickey"));
             saddle.setContentType("image/png");
-            saddle.setImage(readImage("./static/images/saddle.png"));
+            saddle.setImage(readImage("./src/main/resources/static/images/saddle.png"));
             widgetRepository.save(saddle);
 
             Widget regulator = new Widget("Gas Regulator", 3.75, 4.2, 3.75, 1.5);
@@ -247,7 +247,7 @@ public class WidgetService {
             regulator.getTypes().add(typeRepository.findByType("Gizmo"));
             regulator.getTypes().add(typeRepository.findByType("Thingamajig"));
             regulator.setContentType("image/png");
-            regulator.setImage(readImage("./static/images/regulator.png"));
+            regulator.setImage(readImage("./src/main/resources/static/images/regulator.png"));
             widgetRepository.save(regulator);
 
             Widget speedReducer = new Widget("Flexible-Mount Right-Angle Speed Reducer", 6.5, 6.75, 5d, 8.94);
@@ -256,7 +256,7 @@ public class WidgetService {
             speedReducer.getTypes().add(typeRepository.findByType("Apparatus"));
             speedReducer.getTypes().add(typeRepository.findByType("Thingamajig"));
             speedReducer.setContentType("image/png");
-            speedReducer.setImage(readImage("./static/images/speedReducer.png"));
+            speedReducer.setImage(readImage("./src/main/resources/static/images/speedReducer.png"));
             widgetRepository.save(speedReducer);
 
             Widget demagnetizer = new Widget("Loop Demagnetizer", 4.25, 8d, 8d, 10d);
@@ -264,14 +264,14 @@ public class WidgetService {
             demagnetizer.getTypes().add(typeRepository.findByType("Doohickey"));
             demagnetizer.getTypes().add(typeRepository.findByType("Apparatus"));
             demagnetizer.setContentType("image/png");
-            demagnetizer.setImage(readImage("./static/images/demagnetizer.png"));
+            demagnetizer.setImage(readImage("./src/main/resources/static/images/demagnetizer.png"));
             widgetRepository.save(demagnetizer);
 
             Widget separator = new Widget("Rare-Earth Magnetic Separator", 6d, 6d, 3d, 4.123);
             separator.getTypes().add(typeRepository.findByType("Doohickey"));
             separator.getTypes().add(typeRepository.findByType("Whatchamacallit"));
             separator.setContentType("image/png");
-            separator.setImage(readImage("./static/images/separator.png"));
+            separator.setImage(readImage("./src/main/resources/static/images/separator.png"));
             widgetRepository.save(separator);
 
             Widget lanyard = new Widget("Shock-Absorbing Fall-Arrest Lanyard", 6d, 9.5, 18.25, 310d);
@@ -279,7 +279,7 @@ public class WidgetService {
             lanyard.getTypes().add(typeRepository.findByType("Tool"));
             lanyard.getTypes().add(typeRepository.findByType("Thingamabob"));
             lanyard.setContentType("image/png");
-            lanyard.setImage(readImage("./static/images/lanyard.png"));
+            lanyard.setImage(readImage("./src/main/resources/static/images/lanyard.png"));
             widgetRepository.save(lanyard);
 
             Widget keyHolder = new Widget("Retractable Key Holder with Ball Socket/Belt Clip", 48d, 2.75, 2.375, 1d);
@@ -287,14 +287,14 @@ public class WidgetService {
             keyHolder.getTypes().add(typeRepository.findByType("Contrivance"));
             keyHolder.getTypes().add(typeRepository.findByType("Whatchamacallit"));
             keyHolder.setContentType("image/png");
-            keyHolder.setImage(readImage("./static/images/keyHolder.png"));
+            keyHolder.setImage(readImage("./src/main/resources/static/images/keyHolder.png"));
             widgetRepository.save(keyHolder);
 
             Widget ballJoint = new Widget("Super-Swivel Ball Joint Rod End", 1.125, 2.125, 1.125, 10171d);
             ballJoint.getTypes().add(typeRepository.findByType("Thingamabob"));
             ballJoint.getTypes().add(typeRepository.findByType("Contraption"));
             ballJoint.setContentType("image/png");
-            ballJoint.setImage(readImage("./static/images/ballJoint.png"));
+            ballJoint.setImage(readImage("./src/main/resources/static/images/ballJoint.png"));
             widgetRepository.save(ballJoint);
 
             Widget hoistRing = new Widget("Nickel-Coated Steel Hoist Ring for Lifting", 9/16d, 13/16d, 3.25, 800d);
@@ -302,7 +302,7 @@ public class WidgetService {
             hoistRing.getTypes().add(typeRepository.findByType("Apparatus"));
             hoistRing.getTypes().add(typeRepository.findByType("Gizmo"));
             hoistRing.setContentType("image/png");
-            hoistRing.setImage(readImage("./static/images/hoistRing.png"));
+            hoistRing.setImage(readImage("./src/main/resources/static/images/hoistRing.png"));
             widgetRepository.save(hoistRing);
         }
     }
@@ -311,7 +311,9 @@ public class WidgetService {
     private byte[] readImage(String path){
         try {
             return Files.readAllBytes(Paths.get(path));
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+            ignored.printStackTrace();
+        }
         return new byte[0];
     }
 }
