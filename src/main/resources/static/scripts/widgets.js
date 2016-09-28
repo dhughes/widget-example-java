@@ -2,10 +2,9 @@ var currentPage = 0;
 var lastPage = 0;
 
 $(function () {
-    var page = 1;
 
     // get the default list of widgets
-    listWidgets(currentPage, "", "", "");
+    listWidgets(currentPage);
 
     $("#search").click(function(){
         listWidgets(0);
